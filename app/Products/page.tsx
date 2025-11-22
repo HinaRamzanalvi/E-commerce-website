@@ -24,7 +24,7 @@ interface products{
   rating:{
     rate:number;
     count:number;
-    button:string
+    button:string;
   };
 }
 

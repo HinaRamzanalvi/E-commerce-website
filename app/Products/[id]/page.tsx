@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { useCart } from "@/lib/CartContext";
 
 interface Product {
   id: string;
@@ -23,6 +24,7 @@ interface Product {
 const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState<Product | null>(null);
+  const { dispatch } = useCart();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -35,6 +37,12 @@ const ProductDetails = () => {
       fetchProduct();
     }
   }, [id]);
+
+  const handleAddToCart = () => {
+    if (product) {
+      dispatch({ type: "ADD_TO_CART", payload: product });
+    }
+  };
 
   if (!product) {
     return <p>Loading Products...</p>;
@@ -62,7 +70,12 @@ const ProductDetails = () => {
             
           </div>
           <p className="mt-10">
-           <Link href={"/Cart"}><button className="w-[150px] h-[60px] bg-pink-500 rounded-lg text-white">Add to cart</button></Link>
+           <button
+              onClick={handleAddToCart}
+              className="w-[150px] h-[60px] bg-pink-500 rounded-lg text-white"
+            >
+              Add to cart
+            </button>
         </p>
         </div>
         
